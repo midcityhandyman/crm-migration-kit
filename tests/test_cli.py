@@ -41,3 +41,21 @@ def test_errors_are_reported_without_a_traceback(tmp_path, capsys):
     assert "unknown source field 'nope'" in capsys.readouterr().err
     assert main(["run", "--input", str(tmp_path / "missing.csv"), "--mapping", MAPPING, "--out-dir", str(tmp_path)]) == 1
     assert "file not found" in capsys.readouterr().err
+
+
+def test_bad_settings_are_reported_without_a_traceback(tmp_path, capsys, monkeypatch):
+    base = ["run", "--input", SAMPLE, "--mapping", MAPPING, "--out-dir", str(tmp_path), "--quiet"]
+    assert main(base + ["--country-code", "abc"]) == 1
+    assert "country code must be 1 to 3 digits" in capsys.readouterr().err
+    assert main(base + ["--name-similarity", "1.5"]) == 1
+    assert "name similarity must be between 0 and 1" in capsys.readouterr().err
+    monkeypatch.setenv("CRM_KIT_NAME_SIMILARITY", "high")
+    assert main(base) == 1
+    assert "CRM_KIT_NAME_SIMILARITY must be a number" in capsys.readouterr().err
+
+
+def test_non_utf8_input_is_reported_without_a_traceback(tmp_path, capsys):
+    legacy = tmp_path / "legacy.csv"
+    legacy.write_bytes("First Name,Last Name,Email\nRen\xe9e,Sample,renee.sample@example.com\n".encode("latin-1"))
+    assert main(["run", "--input", str(legacy), "--mapping", MAPPING, "--out-dir", str(tmp_path / "out")]) == 1
+    assert "not UTF-8" in capsys.readouterr().err

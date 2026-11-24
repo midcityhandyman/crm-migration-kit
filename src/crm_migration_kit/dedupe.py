@@ -5,6 +5,7 @@ Rules, applied in order:
 1. email_exact            same email address                      -> merge
 2. phone_and_name         same phone and similar names            -> merge
 3. phone_name_missing     same phone and one record has no name   -> merge
+                          (only when the phone belongs to one name)
 4. shared_phone           same phone but different names          -> flag only
 5. name_and_company       same name and company, nothing else     -> flag only
 
@@ -132,20 +133,14 @@ def dedupe(
         if rec.get("phone"):
             by_phone[rec["phone"]].append(rec)
     for phone, group in by_phone.items():
-        for a, b in combinations(group, 2):
+        named = [r for r in group if name_key(r.get("first_name", ""), r.get("last_name", ""))]
+        nameless = [r for r in group if r not in named]
+        for a, b in combinations(named, 2):
             if uf.find(a["_row"]) == uf.find(b["_row"]):
                 continue
             rows = (a["_row"], b["_row"])
-            score = name_similarity(
-                a.get("first_name", ""), a.get("last_name", ""),
-                b.get("first_name", ""), b.get("last_name", ""),
-            )
-            if score is None:
-                uf.union(*rows)
-                links.append(
-                    MatchLink("phone_name_missing", rows, f"same phone {phone} and one record has no name")
-                )
-            elif score >= name_threshold:
+            score = name_similarity(a["first_name"], a["last_name"], b["first_name"], b["last_name"])
+            if score >= name_threshold:
                 uf.union(*rows)
                 links.append(
                     MatchLink(
@@ -158,6 +153,34 @@ def dedupe(
                     (*rows, "shared_phone",
                      f"same phone {phone} but names differ (similarity {score:.2f}), not merged")
                 )
+        # A record with no name merges only when the phone points at one person.
+        # If the named records on this phone are still separate people, merging
+        # the nameless one into each of them would join them all together.
+        for rec in nameless:
+            people: dict[int, Record] = {}
+            for other in named:
+                people.setdefault(uf.find(other["_row"]), other)
+            if uf.find(rec["_row"]) in people:
+                continue
+            if len(people) > 1:
+                for other in people.values():
+                    pending_flags.append(
+                        (*sorted((other["_row"], rec["_row"])), "shared_phone",
+                         f"same phone {phone}, one record has no name and the phone is used "
+                         "by more than one name, not merged")
+                    )
+                continue
+            if people:
+                other = next(iter(people.values()))
+                reason = f"same phone {phone} and row {rec['_row']} has no name"
+            else:
+                other = nameless[0]
+                if other is rec or uf.find(other["_row"]) == uf.find(rec["_row"]):
+                    continue
+                reason = f"same phone {phone} and neither record has a name"
+            rows = tuple(sorted((other["_row"], rec["_row"])))
+            uf.union(*rows)
+            links.append(MatchLink("phone_name_missing", rows, reason))
 
     # Rule 5: same name and company. Too weak to merge on its own.
     by_identity: dict[tuple[str, str], list[Record]] = defaultdict(list)

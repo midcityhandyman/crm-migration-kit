@@ -9,7 +9,15 @@ from pathlib import Path
 
 from . import __version__
 from .mapping import MappingError, load_mapping
-from .pipeline import CLEANED_NAME, REPORT_JSON_NAME, REPORT_MD_NAME, Settings, read_csv, run_migration
+from .pipeline import (
+    CLEANED_NAME,
+    REPORT_JSON_NAME,
+    REPORT_MD_NAME,
+    Settings,
+    SettingsError,
+    read_csv,
+    run_migration,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -76,8 +84,12 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return _cmd_run(args) if args.command == "run" else _cmd_check(args)
-    except MappingError as exc:
+    except (MappingError, SettingsError) as exc:
         print(f"error: {exc}", file=sys.stderr)
+        return 1
+    except UnicodeDecodeError:
+        print("error: the input is not UTF-8 text. Re-export it as UTF-8 (or convert it) and run again.",
+              file=sys.stderr)
         return 1
     except FileNotFoundError as exc:
         print(f"error: file not found: {exc.filename}", file=sys.stderr)

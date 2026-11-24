@@ -92,3 +92,36 @@ def test_unique_records_pass_through_in_order():
     result = dedupe([rec(4, "B", "Two", "b@example.com"), rec(2, "A", "One", "a@example.com")])
     assert [r["_row"] for r in result.records] == [2, 4]
     assert result.merges == [] and result.flags == []
+
+
+def test_nameless_record_does_not_join_two_different_people():
+    # Rows 11 and 12 share an office line under different names. Row 13 has the
+    # same phone and no name: it must not pull the two people into one record.
+    result = dedupe([
+        rec(11, "Taylor", "Mockwell", "taylor.mockwell@example.com", "+15555550104"),
+        rec(12, "Jamie", "Mockwell", "jamie.mockwell@example.com", "+15555550104"),
+        rec(13, "", "", "", "+15555550104"),
+    ])
+    assert [r["_rows"] for r in result.records] == [[11], [12], [13]]
+    assert result.merges == []
+    assert {f["row"] for f in result.flags} == {11, 12, 13}
+    assert {f["code"] for f in result.flags} == {"shared_phone"}
+
+
+def test_nameless_record_merges_when_phone_has_one_person():
+    result = dedupe([
+        rec(5, "Jordan", "Testerson", "", "+15555550102"),
+        rec(6, "J.", "Testerson", "", "+15555550102"),
+        rec(7, "", "", "", "+15555550102"),
+        rec(8, "", "", "", "+15555550102"),
+    ])
+    assert [r["_rows"] for r in result.records] == [[5, 6, 7, 8]]
+    assert [link.rule for link in result.merges[0].links] == [
+        "phone_and_name", "phone_name_missing", "phone_name_missing"]
+    assert result.flags == []
+
+
+def test_two_nameless_records_on_one_phone_merge_with_accurate_reason():
+    result = dedupe([rec(2, phone="+15555550120"), rec(3, phone="+15555550120")])
+    assert len(result.records) == 1
+    assert result.merges[0].links[0].reason == "same phone +15555550120 and neither record has a name"

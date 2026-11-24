@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import json
 import os
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -18,17 +19,36 @@ REPORT_JSON_NAME = "validation_report.json"
 REPORT_MD_NAME = "validation_report.md"
 
 
+class SettingsError(ValueError):
+    """Raised when a command line option or environment setting is unusable."""
+
+
 @dataclass(frozen=True)
 class Settings:
     default_country_code: str = "1"
     name_similarity: float = 0.82
 
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"\d{1,3}", self.default_country_code):
+            raise SettingsError(
+                f"country code must be 1 to 3 digits, got '{self.default_country_code}'"
+            )
+        if not 0.0 <= self.name_similarity <= 1.0:
+            raise SettingsError(f"name similarity must be between 0 and 1, got {self.name_similarity}")
+
     @classmethod
     def from_env(cls, env: dict | None = None) -> "Settings":
         env = os.environ if env is None else env
+        raw_similarity = str(env.get("CRM_KIT_NAME_SIMILARITY", "") or "0.82")
+        try:
+            similarity = float(raw_similarity)
+        except ValueError:
+            raise SettingsError(
+                f"CRM_KIT_NAME_SIMILARITY must be a number between 0 and 1, got '{raw_similarity}'"
+            ) from None
         return cls(
-            default_country_code=str(env.get("CRM_KIT_DEFAULT_COUNTRY_CODE", "1")).lstrip("+") or "1",
-            name_similarity=float(env.get("CRM_KIT_NAME_SIMILARITY", "0.82")),
+            default_country_code=str(env.get("CRM_KIT_DEFAULT_COUNTRY_CODE", "1")).strip().lstrip("+") or "1",
+            name_similarity=similarity,
         )
 
 
