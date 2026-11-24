@@ -1,0 +1,62 @@
+# Mapping for the synthetic sample export. Copy and edit for a real migration.
+version: 1
+
+# Canonical field -> header names seen in source exports.
+# Matching ignores case, spaces and punctuation ("E-mail Address" = "email address").
+source_columns:
+  full_name: ["Full Name", "Name", "Contact"]
+  first_name: ["First Name", "First", "Given Name"]
+  last_name: ["Last Name", "Last", "Surname"]
+  email: ["E-mail Address", "Email Address", "E-mail"]
+  phone: ["Phone #", "Phone Number", "Mobile", "Tel"]
+  company: ["Company", "Company Name", "Organisation"]
+  lead_source: ["Lead Source", "Source"]
+  city: ["City", "Town"]
+  notes: ["Notes", "Comments"]
+
+rules:
+  # A row with none of these (after normalisation) is dropped.
+  require_any: [email, phone]
+  # Cell values treated as empty.
+  blank_tokens: ["n/a", "na", "none", "null", "unknown", "-", "tbd"]
+  # sam+crm@example.com matches sam@example.com when looking for duplicates.
+  ignore_email_plus_tags: true
+
+target:
+  # Extra column listing the source rows behind each output row. Remove to omit.
+  audit_column: SourceRows
+  fields:
+    - name: FirstName
+      from: first_name
+    - name: LastName
+      from: last_name
+      required: true
+    - name: DisplayName
+      template: "{first_name} {last_name}"
+    - name: Email
+      from: email
+    - name: Phone
+      from: phone
+    - name: PhoneExtension
+      from: phone_ext
+    - name: Account
+      from: company
+    - name: LeadSource
+      from: lead_source
+      default: Unknown
+      unmapped: Other
+      value_map:
+        web: Website
+        website: Website
+        referral: Referral
+        phone: Phone
+        email: Email
+        email campaign: Email
+        trade show: Trade Show
+        walk in: Walk In
+    - name: City
+      from: city
+    - name: Notes
+      from: notes
+    - name: ImportBatch
+      constant: sample-batch-01

@@ -1,0 +1,30 @@
+Full Name, First Name ,Last Name,E-mail Address,Phone #,Company,Lead Source,City,Notes,Legacy ID
+,Alex,Sample,alex.sample@example.com,(555) 555-0101,Example Property Group,web,Sampleville,,L-001
+,ALEX,SAMPLE,Alex.Sample@Example.com ,555.555.0101,Example Property Group,Web,Sampleville,duplicate entry from old system,L-002
+"Sample, Alex",,,,+1 555 555 0101,,referral,,called twice,L-003
+,Jordan,Testerson,jordan.testerson@example.com,555-555-0102 x204,Demo Rentals LLC,referral,Faketown,,L-004
+,J.,Testerson,,5555550102,Demo Rentals LLC,,Faketown,,L-005
+,Casey,Placeholder,casey@example,555-555-0103,,web,Mockford,,L-006
+,Riley,Example,riley.example@example.org,555-01,Sample Plumbing Co,phone,,,L-007
+,Morgan,Fakename,,,Example Property Group,walk in,,no contact details on file,L-008
+,,,,,,,,,
+,Taylor,Mockwell,taylor.mockwell@example.com,555-555-0104,Mockwell Holdings,WEB,Sampleville,,L-010
+,Jamie,Mockwell,jamie.mockwell@example.com,(555)555-0104,Mockwell Holdings,web,Sampleville,shares the office line,L-011
+,Sam,Demoson,sam.demoson+crm@example.com,555 555 0105,,email campaign,Faketown,,L-012
+,Sam,Demoson,sam.demoson@example.com,,Demo Rentals LLC,email,Faketown,,L-013
+Pat Q. Sampleton,,,mailto:pat.sampleton@example.net,1-555-555-0106,Sampleton and Co,referral,Mockford,,L-014
+,Drew,Testman,"drew.testman@example,com",555-555-0115,,web,Faketown,,L-015
+,Robin,Faux,<robin.faux@example.com>,555-555-0107,Faux Interiors,Trade Show,,,L-016
+,robin,faux,,555-555-0199,Faux Interiors,trade show,Sampleville,,L-017
+,Avery,Nullson,n/a,none,,web,,placeholder values only,L-018
+,Quinn,Dummy,quinn.dummy@example.com,+1 (555) 555-0108,,web,Faketown,,L-019
+,Quinn,Dummy,QUINN.DUMMY@EXAMPLE.COM,,,Website,Faketown,prefers email,L-020
+,Skyler,Specimen,skyler.specimen@example.com,555-555-0109,Specimen Supply,yellow pages,Mockford,,L-021
+,,,orphan@example.com,,,web,,name never captured,L-022
+,Harper,Trialrun,harper.trialrun@example.com,555-555-0110 ext. 7,Trialrun Realty,referral,Sampleville,,L-023
+"TRIALRUN, HARPER",,,harper.trialrun@example.com,,,,,,L-024
+,Reese,Stubb,reese.stubb@example.com,555-555-0111,,web,Faketown,,L-025
+,Reese,Stubb,reese.stubb@example.org,555-555-0111,,web,Faketown,new email address,L-026
+,Emerson,Sandbox,emerson.sandbox@example.com,555-555-0112,Sandbox Storage,phone,Mockford,,L-027
+,Finley,Prototype,finley.prototype@example.com,555-555-0113,,Web,Sampleville,,L-028
+,Dakota,Fixture,dakota.fixture@example.com,(555) 555-0114,Fixture Works,referral,Faketown,,L-029

@@ -1,0 +1,20 @@
+FirstName,LastName,DisplayName,Email,Phone,PhoneExtension,Account,LeadSource,City,Notes,ImportBatch,SourceRows
+Alex,Sample,Alex Sample,alex.sample@example.com,+15555550101,,Example Property Group,Website,Sampleville,duplicate entry from old system,sample-batch-01,2 3 4
+Jordan,Testerson,Jordan Testerson,jordan.testerson@example.com,+15555550102,204,Demo Rentals LLC,Referral,Faketown,,sample-batch-01,5 6
+Casey,Placeholder,Casey Placeholder,,+15555550103,,,Website,Mockford,,sample-batch-01,7
+Riley,Example,Riley Example,riley.example@example.org,,,Sample Plumbing Co,Phone,,,sample-batch-01,8
+Taylor,Mockwell,Taylor Mockwell,taylor.mockwell@example.com,+15555550104,,Mockwell Holdings,Website,Sampleville,,sample-batch-01,11
+Jamie,Mockwell,Jamie Mockwell,jamie.mockwell@example.com,+15555550104,,Mockwell Holdings,Website,Sampleville,shares the office line,sample-batch-01,12
+Sam,Demoson,Sam Demoson,sam.demoson+crm@example.com,+15555550105,,Demo Rentals LLC,Email,Faketown,,sample-batch-01,13 14
+Pat Q.,Sampleton,Pat Q. Sampleton,pat.sampleton@example.net,+15555550106,,Sampleton and Co,Referral,Mockford,,sample-batch-01,15
+Drew,Testman,Drew Testman,drew.testman@example.com,+15555550115,,,Website,Faketown,,sample-batch-01,16
+Robin,Faux,Robin Faux,robin.faux@example.com,+15555550107,,Faux Interiors,Trade Show,,,sample-batch-01,17
+Robin,Faux,Robin Faux,,+15555550199,,Faux Interiors,Trade Show,Sampleville,,sample-batch-01,18
+Quinn,Dummy,Quinn Dummy,quinn.dummy@example.com,+15555550108,,,Website,Faketown,prefers email,sample-batch-01,20 21
+Skyler,Specimen,Skyler Specimen,skyler.specimen@example.com,+15555550109,,Specimen Supply,Other,Mockford,,sample-batch-01,22
+,,,orphan@example.com,,,,Website,,name never captured,sample-batch-01,23
+Harper,Trialrun,Harper Trialrun,harper.trialrun@example.com,+15555550110,7,Trialrun Realty,Referral,Sampleville,,sample-batch-01,24 25
+Reese,Stubb,Reese Stubb,reese.stubb@example.org,+15555550111,,,Website,Faketown,new email address,sample-batch-01,26 27
+Emerson,Sandbox,Emerson Sandbox,emerson.sandbox@example.com,+15555550112,,Sandbox Storage,Phone,Mockford,,sample-batch-01,28
+Finley,Prototype,Finley Prototype,finley.prototype@example.com,+15555550113,,,Website,Sampleville,,sample-batch-01,29
+Dakota,Fixture,Dakota Fixture,dakota.fixture@example.com,+15555550114,,Fixture Works,Referral,Faketown,,sample-batch-01,30

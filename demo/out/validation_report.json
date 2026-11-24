@@ -1,0 +1,254 @@
+{
+  "input_file": "sample_data/contacts_messy.csv",
+  "mapping_file": "sample_data/mapping.yaml",
+  "summary": {
+    "rows_read": 29,
+    "rows_dropped": 3,
+    "rows_merged_away": 7,
+    "merge_groups": 6,
+    "rows_flagged": 9,
+    "flags_total": 9,
+    "rows_written": 19,
+    "balanced": true
+  },
+  "drop_reasons": {
+    "empty_row": 1,
+    "no_contact_method": 2
+  },
+  "flag_codes": {
+    "email_repaired": 1,
+    "invalid_email": 1,
+    "invalid_phone": 1,
+    "missing_required": 1,
+    "possible_duplicate": 2,
+    "shared_phone": 2,
+    "unmapped_value": 1
+  },
+  "unmapped_columns": [
+    "Legacy ID"
+  ],
+  "dropped": [
+    {
+      "row": 9,
+      "reason": "no_contact_method",
+      "detail": "No valid email or phone after normalisation."
+    },
+    {
+      "row": 10,
+      "reason": "empty_row",
+      "detail": "No mapped column has a value."
+    },
+    {
+      "row": 19,
+      "reason": "no_contact_method",
+      "detail": "No valid email or phone after normalisation."
+    }
+  ],
+  "merges": [
+    {
+      "kept_row": 3,
+      "merged_rows": [
+        2,
+        4
+      ],
+      "rules": [
+        {
+          "rule": "email_exact",
+          "rows": [
+            2,
+            3
+          ],
+          "reason": "same email address alex.sample@example.com"
+        },
+        {
+          "rule": "phone_and_name",
+          "rows": [
+            2,
+            4
+          ],
+          "reason": "same phone +15555550101 and name similarity 1.00 (threshold 0.82)"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "lead_source",
+          "kept": "Web",
+          "discarded": "referral",
+          "from_row": 4
+        },
+        {
+          "field": "notes",
+          "kept": "duplicate entry from old system",
+          "discarded": "called twice",
+          "from_row": 4
+        }
+      ]
+    },
+    {
+      "kept_row": 5,
+      "merged_rows": [
+        6
+      ],
+      "rules": [
+        {
+          "rule": "phone_and_name",
+          "rows": [
+            5,
+            6
+          ],
+          "reason": "same phone +15555550102 and name similarity 0.90 (threshold 0.82)"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "first_name",
+          "kept": "Jordan",
+          "discarded": "J.",
+          "from_row": 6
+        }
+      ]
+    },
+    {
+      "kept_row": 13,
+      "merged_rows": [
+        14
+      ],
+      "rules": [
+        {
+          "rule": "email_exact",
+          "rows": [
+            13,
+            14
+          ],
+          "reason": "same email address sam.demoson@example.com"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "email",
+          "kept": "sam.demoson+crm@example.com",
+          "discarded": "sam.demoson@example.com",
+          "from_row": 14
+        },
+        {
+          "field": "lead_source",
+          "kept": "email campaign",
+          "discarded": "email",
+          "from_row": 14
+        }
+      ]
+    },
+    {
+      "kept_row": 20,
+      "merged_rows": [
+        21
+      ],
+      "rules": [
+        {
+          "rule": "email_exact",
+          "rows": [
+            20,
+            21
+          ],
+          "reason": "same email address quinn.dummy@example.com"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "lead_source",
+          "kept": "web",
+          "discarded": "Website",
+          "from_row": 21
+        }
+      ]
+    },
+    {
+      "kept_row": 24,
+      "merged_rows": [
+        25
+      ],
+      "rules": [
+        {
+          "rule": "email_exact",
+          "rows": [
+            24,
+            25
+          ],
+          "reason": "same email address harper.trialrun@example.com"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "kept_row": 27,
+      "merged_rows": [
+        26
+      ],
+      "rules": [
+        {
+          "rule": "phone_and_name",
+          "rows": [
+            26,
+            27
+          ],
+          "reason": "same phone +15555550111 and name similarity 1.00 (threshold 0.82)"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "email",
+          "kept": "reese.stubb@example.org",
+          "discarded": "reese.stubb@example.com",
+          "from_row": 26
+        }
+      ]
+    }
+  ],
+  "flags": [
+    {
+      "row": 7,
+      "code": "invalid_email",
+      "detail": "Could not read email 'casey@example', left blank."
+    },
+    {
+      "row": 8,
+      "code": "invalid_phone",
+      "detail": "Could not read phone '555-01', left blank."
+    },
+    {
+      "row": 11,
+      "code": "shared_phone",
+      "detail": "same phone +15555550104 but names differ (similarity 0.67), not merged (other row 12)"
+    },
+    {
+      "row": 12,
+      "code": "shared_phone",
+      "detail": "same phone +15555550104 but names differ (similarity 0.67), not merged (other row 11)"
+    },
+    {
+      "row": 16,
+      "code": "email_repaired",
+      "detail": "Email 'drew.testman@example,com' repaired to 'drew.testman@example.com', please confirm."
+    },
+    {
+      "row": 17,
+      "code": "possible_duplicate",
+      "detail": "same name and company but no shared email or phone, not merged (other row 18)"
+    },
+    {
+      "row": 18,
+      "code": "possible_duplicate",
+      "detail": "same name and company but no shared email or phone, not merged (other row 17)"
+    },
+    {
+      "row": 22,
+      "code": "unmapped_value",
+      "detail": "LeadSource: 'yellow pages' is not in value_map, wrote 'Other'"
+    },
+    {
+      "row": 23,
+      "code": "missing_required",
+      "detail": "LastName is required but empty"
+    }
+  ]
+}
